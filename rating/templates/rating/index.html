@@ -4,6 +4,14 @@
 
 {% load rating_extras %}
 
+<h4>Add performer</h4>
+
+<form action="{% url 'rating:add_performer' %}" method="post">
+{% csrf_token %}
+    Name<input name="name" type="text"/><br>
+    <input type="submit" value="Add"/>
+</form>
+
 <p>Performers</p>
 {% performer_list performers %}
 <p>Albums</p>

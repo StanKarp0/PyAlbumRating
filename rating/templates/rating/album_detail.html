@@ -2,7 +2,21 @@
 
 {% block content %}
 
-<p>{{ album.title }}</p>
+<h3>
+    <a href="{% url 'rating:performer_detail' album.performer.pk %}">
+        {{ album.performer.name }}
+    </a>
+    - {{ album.title }}
+</h3>
+
+<h4>Rate album</h4>
+<form action="{% url 'rating:rate_album' album.pk %}" method="post">
+{% csrf_token %}
+    Rating<input name="rating" type="number" step="0.1" min="0" max="10" value="6"/><br>
+    Style<input name="style" type="text"/><br>
+    Desc<input name="desc" type="text"/><br>
+    <input type="submit" value="Add"/>
+</form>
 
 {% if ratings %}
     <ul>

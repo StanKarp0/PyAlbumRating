@@ -1,7 +1,15 @@
 {% extends "rating/base.html" %}
 {% block content %}
 
-{{ performer.name }}
+<h3>{{ performer.name }}</h3>
+
+<h4>Add album</h4>
+<form action="{% url 'rating:add_album' performer.pk %}" method="post">
+{% csrf_token %}
+    Title<input name="title" type="text"/><br>
+    Year<input name="year" type="number" value="1975"/><br>
+    <input type="submit" value="Add"/>
+</form>
 
 {% load rating_extras %}
 {% album_list albums %}
