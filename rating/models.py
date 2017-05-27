@@ -14,6 +14,9 @@ class Performer(models.Model):
     def mean(self):
         return Rating.objects.filter(album__performer_id=self.pk).aggregate(models.Avg('rating'))['rating__avg']
 
+    def albums(self):
+        return Album.objects.filter(performer_id=self.pk).order_by('-pub_year')
+
 
 class Album(models.Model):
     performer = models.ForeignKey(Performer)
@@ -23,8 +26,12 @@ class Album(models.Model):
     def mean(self):
         return Rating.objects.filter(album__id=self.pk).aggregate(models.Avg('rating'))['rating__avg']
 
+    def ratings(self):
+        return Rating.objects.filter(album__id=self.pk).order_by('date')
+
 
 class Rating(models.Model):
+    date = models.DateField(auto_now=True)
     album = models.ForeignKey(Album)
     rating = models.FloatField(validators=[MinValueValidator(0.), MaxValueValidator(10.)])
     style = models.CharField(max_length=50)

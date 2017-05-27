@@ -1,0 +1,9 @@
+{% extends "rating/base.html" %}
+{% block content %}
+
+{{ performer.name }}
+
+{% load rating_extras %}
+{% album_list albums %}
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "rating/base.html" %}
+
+{% block content %}
+
+<p>{{ album.title }}</p>
+
+{% if ratings %}
+    <ul>
+    {% for rating in ratings %}
+        <li>{{ rating.date }} {{ rating.rating }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No ratings are available.</p>
+{% endif %}
+
+{% endblock %}

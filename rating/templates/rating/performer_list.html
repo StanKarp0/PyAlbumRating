@@ -1,0 +1,9 @@
+{% if performer_list %}
+    <ul>
+    {% for perf in performer_list %}
+        <li><a href="{% url 'rating:performer_detail' perf.id %}">{{ perf.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No performers are available.</p>
+{% endif %}
