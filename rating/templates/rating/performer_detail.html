@@ -3,6 +3,12 @@
 
 <h3>{{ performer.name }}</h3>
 
+<h4>
+    <a href="{% url 'rating:update_performer' performer.pk %}">
+        Edit
+    </a>
+</h4>
+
 <h4>Add album</h4>
 <form action="{% url 'rating:add_album' performer.pk %}" method="post">
 {% csrf_token %}

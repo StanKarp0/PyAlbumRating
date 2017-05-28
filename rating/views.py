@@ -23,6 +23,25 @@ class AlbumDetailView(generic.DetailView):
         return context
 
 
+class AlbumUpdateView(generic.UpdateView):
+    model = Album
+    fields = ['performer', 'title', 'pub_year']
+    template_name = 'rating/album_update.html'
+
+    def get_success_url(self):
+        return reverse('rating:album_detail', args=(self.kwargs['pk'],))
+
+
+class RatingUpdateView(generic.UpdateView):
+    model = Rating
+    fields = ['rating', 'style', 'desc']
+    template_name = 'rating/rating_update.html'
+
+    def get_success_url(self):
+        album_id = get_object_or_404(Rating, pk=self.kwargs['pk']).album.pk
+        return reverse('rating:album_detail', args=(album_id, ))
+
+
 class PerformerDetailView(generic.DetailView):
     model = Performer
     template_name = 'rating/performer_detail.html'
@@ -31,6 +50,15 @@ class PerformerDetailView(generic.DetailView):
         context = super(PerformerDetailView, self).get_context_data(**kwargs)
         context['albums'] = kwargs['object'].albums()
         return context
+
+
+class PerformerUpdateView(generic.UpdateView):
+    model = Performer
+    fields = ['name']
+    template_name = 'rating/performer_update.html'
+
+    def get_success_url(self):
+        return reverse('rating:performer_detail', args=(self.kwargs['pk'], ))
 
 
 def performer_add(request):
@@ -55,4 +83,11 @@ def album_rate(request, album_id):
         style=request.POST['style'],
         desc=request.POST['desc']
     ).save()
+    return HttpResponseRedirect(reverse('rating:album_detail', args=(album_id,)))
+
+
+def rate_delete(request, rate_id):
+    rate = get_object_or_404(Rating, pk=rate_id)
+    album_id = rate.album.pk
+    rate.delete()
     return HttpResponseRedirect(reverse('rating:album_detail', args=(album_id,)))

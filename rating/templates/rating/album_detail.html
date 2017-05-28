@@ -8,7 +8,11 @@
     </a>
     - {{ album.title }}
 </h3>
-
+<h4>
+    <a href="{% url 'rating:update_album' album.pk %}">
+        Edit
+    </a>
+</h4>
 <h4>Rate album</h4>
 <form action="{% url 'rating:rate_album' album.pk %}" method="post">
 {% csrf_token %}
@@ -21,7 +25,11 @@
 {% if ratings %}
     <ul>
     {% for rating in ratings %}
-        <li>{{ rating.date }} {{ rating.rating }}</li>
+        <li>
+            {{ rating.date }} {{ rating.rating }}
+            <a href="{% url 'rating:rate_update' rating.pk %}">Update</a>
+            <a href="{% url 'rating:rate_delete' rating.pk %}">Delete</a>
+        </li>
     {% endfor %}
     </ul>
 {% else %}
