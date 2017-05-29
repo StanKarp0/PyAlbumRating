@@ -6,21 +6,26 @@ from .models import Album, Rating, Performer
 from django.views import generic
 
 
-def index(request):
-    return render(request, 'rating/index.html', {
-        'albums': Album.objects.order_by('-pub_year'),
-        'performers': Performer.objects.order_by('name')
-    })
+class IndexView(generic.CreateView):
+    model = Performer
+    fields = ['name']
+    template_name = 'rating/index.html'
+
+    def get_success_url(self):
+        return reverse('rating:index')
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['albums_rated'] = Album.rated()
+        context['albums_unrated'] = Album.unrated()
+        context['performers'] = Performer.objects.order_by('name')
+        context['ratings'] = Rating.objects.order_by('-date')
+        return context
 
 
 class AlbumDetailView(generic.DetailView):
     model = Album
     template_name = 'rating/album_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(AlbumDetailView, self).get_context_data(**kwargs)
-        context['ratings'] = kwargs['object'].ratings()
-        return context
 
 
 class AlbumUpdateView(generic.UpdateView):
@@ -45,11 +50,6 @@ class RatingUpdateView(generic.UpdateView):
 class PerformerDetailView(generic.DetailView):
     model = Performer
     template_name = 'rating/performer_detail.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(PerformerDetailView, self).get_context_data(**kwargs)
-        context['albums'] = kwargs['object'].albums()
-        return context
 
 
 class PerformerUpdateView(generic.UpdateView):
@@ -91,3 +91,13 @@ def rate_delete(request, rate_id):
     album_id = rate.album.pk
     rate.delete()
     return HttpResponseRedirect(reverse('rating:album_detail', args=(album_id,)))
+
+
+def performer_delete(request, pk):
+    get_object_or_404(Performer, pk=pk).delete()
+    return HttpResponseRedirect(reverse('rating:index'))
+
+
+def album_delete(request, pk):
+    get_object_or_404(Album, pk=pk).delete()
+    return HttpResponseRedirect(reverse('rating:index'))

@@ -1,9 +1,22 @@
 {% if performer_list %}
-    <ul>
+    <table>
+    <tr>
+        <th>Name</th>
+        <th>Albums</th>
+        <th>Average</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
     {% for perf in performer_list %}
-        <li><a href="{% url 'rating:performer_detail' perf.id %}">{{ perf.name }}</a></li>
+        <tr>
+            <td><a href="{% url 'rating:performer_detail' perf.id %}">{{ perf.name }}</a></td>
+            <td>{{ perf.albums_count }}</td>
+            <td>{{ perf.mean }}</td>
+            <td><a href="{% url 'rating:update_performer' perf.id %}">Update</a></td>
+            <td><a href="{% url 'rating:delete_performer' perf.id %}">Delete</a></td>
+        </tr>
     {% endfor %}
-    </ul>
+    </table>
 {% else %}
     <p>No performers are available.</p>
 {% endif %}

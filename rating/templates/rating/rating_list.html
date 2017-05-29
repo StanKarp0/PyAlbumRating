@@ -1,0 +1,26 @@
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Performer</th>
+        <th>Title</th>
+        <th>Year</th>
+        <th>Rate</th>
+        <th>Style</th>
+        <th>Desc</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for rating in rating_list %}
+    <tr>
+        <td>{{ rating.date }}</td>
+        <td><a href="{% url 'rating:performer_detail' rating.album.performer.id %}">{{ rating.album.performer.name }}</a></td>
+        <td><a href="{% url 'rating:album_detail' rating.album.id %}">{{ rating.album.title }}</a></td>
+        <td>{{ rating.album.pub_year }}</td>
+        <td>{{ rating.rating }}</td>
+        <td>{{ rating.style }}</td>
+        <td>{{ rating.desc }}</td>
+        <td><a href="{% url 'rating:rate_update' rating.pk %}">Update</a></td>
+        <td><a href="{% url 'rating:rate_delete' rating.pk %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>

@@ -2,7 +2,18 @@
 
 {% block content %}
 
-{{ rating.album.title }}
+<h3>
+    <a href="{% url 'rating:performer_detail' rating.album.performer.pk %}">
+        {{ rating.album.performer.name }}
+    </a>
+    - <a href="{% url 'rating:album_detail' rating.album.pk %}">
+        {{ rating.album.title }}
+    </a>
+    - {{ rating.album.pub_year }}
+</h3>
+
+<hr>
+<h4>Edit</h4>
 
 <form action="" method="post">{% csrf_token %}
     {{ form.as_p }}

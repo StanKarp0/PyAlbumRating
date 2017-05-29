@@ -2,38 +2,47 @@
 
 {% block content %}
 
+
 <h3>
-    <a href="{% url 'rating:performer_detail' album.performer.pk %}">
-        {{ album.performer.name }}
-    </a>
-    - {{ album.title }}
+    <a href="{% url 'rating:performer_detail' album.performer.pk %}">{{ album.performer.name }}</a>
+    - {{ album.title }} - {{ album.pub_year }}
 </h3>
-<h4>
-    <a href="{% url 'rating:update_album' album.pk %}">
-        Edit
-    </a>
-</h4>
+<h5>
+    <a href="{% url 'rating:update_album' album.pk %}">Edit</a>
+    <a href="{% url 'rating:delete_album' album.pk %}">Delete</a>
+</h5>
+
+<hr>
 <h4>Rate album</h4>
 <form action="{% url 'rating:rate_album' album.pk %}" method="post">
 {% csrf_token %}
-    Rating<input name="rating" type="number" step="0.1" min="0" max="10" value="6"/><br>
-    Style<input name="style" type="text"/><br>
-    Desc<input name="desc" type="text"/><br>
+    <p><label>Rating:</label><input name="rating" type="number" step="0.1" min="0" max="10" value="6"/></p>
+    <p><label>Style:</label><input name="style" type="text"/></p>
+    <p><label>Description:</label><input name="desc" type="text"/></p>
     <input type="submit" value="Add"/>
 </form>
 
-{% if ratings %}
-    <ul>
-    {% for rating in ratings %}
-        <li>
-            {{ rating.date }} {{ rating.rating }}
-            <a href="{% url 'rating:rate_update' rating.pk %}">Update</a>
-            <a href="{% url 'rating:rate_delete' rating.pk %}">Delete</a>
-        </li>
+<hr>
+<h4>Ratings</h4>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Rate</th>
+        <th>Style</th>
+        <th>Desc</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for rating in album.rating_set.all %}
+    <tr>
+        <td>{{ rating.date }}</td>
+        <td>{{ rating.rating }}</td>
+        <td>{{ rating.style }}</td>
+        <td>{{ rating.desc }}</td>
+        <td><a href="{% url 'rating:rate_update' rating.pk %}">Update</a></td>
+        <td><a href="{% url 'rating:rate_delete' rating.pk %}">Delete</a></td>
+    </tr>
     {% endfor %}
-    </ul>
-{% else %}
-    <p>No ratings are available.</p>
-{% endif %}
+</table>
 
 {% endblock %}

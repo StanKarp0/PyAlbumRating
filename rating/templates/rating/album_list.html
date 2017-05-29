@@ -1,9 +1,20 @@
-{% if album_list %}
-    <ul>
+<table>
+    <tr>
+        <th>Performer</th>
+        <th>Title</th>
+        <th>Year</th>
+        <th>Average</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
     {% for album in album_list %}
-        <li><a href="{% url 'rating:album_detail' album.id %}">{{ album.title }}</a></li>
+    <tr>
+        <td><a href="{% url 'rating:performer_detail' album.performer.id %}">{{ album.performer.name }}</a></td>
+        <td><a href="{% url 'rating:album_detail' album.id %}">{{ album.title }}</a></td>
+        <td>{{ album.pub_year }}</td>
+        <td>{{ album.mean }}</td>
+        <td><a href="{% url 'rating:update_album' album.pk %}">Update</a></td>
+        <td><a href="{% url 'rating:delete_album' album.pk %}">Delete</a></td>
+    </tr>
     {% endfor %}
-    </ul>
-{% else %}
-    <p>No albums are available.</p>
-{% endif %}
+</table>

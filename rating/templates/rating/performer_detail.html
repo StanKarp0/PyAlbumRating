@@ -3,12 +3,12 @@
 
 <h3>{{ performer.name }}</h3>
 
-<h4>
-    <a href="{% url 'rating:update_performer' performer.pk %}">
-        Edit
-    </a>
-</h4>
+<h5>
+    <a href="{% url 'rating:update_performer' performer.pk %}">Edit</a>
+    <a href="{% url 'rating:delete_performer' performer.pk %}">Delete</a>
+</h5>
 
+<hr>
 <h4>Add album</h4>
 <form action="{% url 'rating:add_album' performer.pk %}" method="post">
 {% csrf_token %}
@@ -17,7 +17,9 @@
     <input type="submit" value="Add"/>
 </form>
 
+<hr>
+<h4>Ratings</h4>
 {% load rating_extras %}
-{% album_list albums %}
+{% album_list performer.album_set.all %}
 
 {% endblock %}
