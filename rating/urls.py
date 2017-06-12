@@ -5,6 +5,9 @@ from . import views
 app_name = 'rating'
 urlpatterns = [
     url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^unrated$', views.AlbumUnratedView.as_view(), name="unrated_album"),
+    url(r'^rated$', views.AlbumRatedView.as_view(), name="rated_album"),
+    url(r'^ratings$', views.RatingListView.as_view(), name='ratings'),
     url(r'^album/(?P<pk>[0-9]+)/$', views.AlbumDetailView.as_view(), name='album_detail'),
     url(r'^album/add/(?P<performer_id>[0-9]+)/$', views.album_add, name='add_album'),
     url(r'^album/rate/(?P<album_id>[0-9]+)/$', views.album_rate, name='rate_album'),

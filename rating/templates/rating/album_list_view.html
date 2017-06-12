@@ -1,0 +1,13 @@
+{% extends "rating/base.html" %}
+
+{% block title %}
+Album Rating
+{% endblock %}
+
+{% block content %}
+{% load rating_extras %}
+
+<h4>{{ title }}</h4>
+{% album_list object_list %}
+
+{% endblock %}

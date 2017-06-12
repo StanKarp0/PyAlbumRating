@@ -1,5 +1,9 @@
 {% extends "rating/base.html" %}
 
+{% block title %}
+Album Rating
+{% endblock %}
+
 {% block content %}
 
 {% load rating_extras %}
@@ -14,15 +18,4 @@
 <h4>Performers</h4>
 {% performer_list performers %}
 
-<hr>
-<h4>Albums rated</h4>
-{% album_list albums_rated %}
-
-<hr>
-<h4>Albums unrated</h4>
-{% album_list albums_unrated %}
-
-<hr>
-<h4>Ratings</h4>
-{% rating_list ratings %}
 {% endblock %}

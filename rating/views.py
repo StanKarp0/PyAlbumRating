@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponseRedirect
 from .models import Album, Rating, Performer
 from django.views import generic
+from django.db.models import Q
 
 
 class IndexView(generic.CreateView):
@@ -37,6 +38,34 @@ class AlbumUpdateView(generic.UpdateView):
         return reverse('rating:album_detail', args=(self.kwargs['pk'],))
 
 
+class AlbumUnratedView(generic.ListView):
+    model = Album
+    template_name = 'rating/album_list_view.html'
+
+    def get_queryset(self):
+        qs = super(AlbumUnratedView, self).get_queryset()
+        return qs.filter(rating=None)
+
+    def get_context_data(self, **kwargs):
+        context = super(AlbumUnratedView, self).get_context_data(**kwargs)
+        context['title'] = 'Unrated albums'
+        return context
+
+
+class AlbumRatedView(generic.ListView):
+    model = Album
+    template_name = 'rating/album_list_view.html'
+
+    def get_queryset(self):
+        qs = super(AlbumRatedView, self).get_queryset()
+        return qs.filter(~Q(rating=None))
+
+    def get_context_data(self, **kwargs):
+        context = super(AlbumRatedView, self).get_context_data(**kwargs)
+        context['title'] = 'Rated albums'
+        return context
+
+
 class RatingUpdateView(generic.UpdateView):
     model = Rating
     fields = ['rating', 'style', 'desc']
@@ -45,6 +74,11 @@ class RatingUpdateView(generic.UpdateView):
     def get_success_url(self):
         album_id = get_object_or_404(Rating, pk=self.kwargs['pk']).album.pk
         return reverse('rating:album_detail', args=(album_id, ))
+
+
+class RatingListView(generic.ListView):
+    model = Rating
+    template_name = 'rating/rating_list.html'
 
 
 class PerformerDetailView(generic.DetailView):

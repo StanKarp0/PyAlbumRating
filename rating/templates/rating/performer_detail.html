@@ -1,6 +1,10 @@
 {% extends "rating/base.html" %}
 {% block content %}
 
+{% block title %}
+Album Rating - {{ performer.name }}
+{% endblock %}
+
 <h3>{{ performer.name }}</h3>
 
 <h5>

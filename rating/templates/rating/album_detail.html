@@ -1,8 +1,8 @@
 {% extends "rating/base.html" %}
-
+{% block title %}
+Album Rating - {{ album.performer.name }} - {{ album.title }}
+{% endblock %}
 {% block content %}
-
-
 <h3>
     <a href="{% url 'rating:performer_detail' album.performer.pk %}">{{ album.performer.name }}</a>
     - {{ album.title }} - {{ album.pub_year }}
